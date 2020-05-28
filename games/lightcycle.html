@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Light Cycle</title>
+<style>
+html, body{padding:0px;margin:0px;}
+.side{width:8%;display:inline-block;}
+.game{width:80%;display:inline-block;margin:0px;}
+.panel{width:100%;display:inline-block;}
+table{width:100%;border:solid 10px;}
+td{height:6vh;}
+@media only screen and (max-width:600px){
+	.side{width:0%;}
+	.game{width:100%;}
+	td{height:5vh;}
+}
+</style>
+</head>
+<body>
+<div class = "side">
+</div>
+<div class = "game">
+<table>
+<tr id = "top">
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr>
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+<tr id="bottom">
+<td class = "left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td  class = "right"></td>
+</tr>
+</table>
+</div>
+<div class = "side">
+</div>
+<script>
+var cells = document.getElementsByTagName("td");
+var blue = place("blue");
+var red = place("red");
+function place(colour){
+	var cell;
+	var placed = false;
+	while(placed != true){
+		cell = Math.floor(Math.random() * 100);
+		if(cells[cell].style.backgroundColor != "red" && cells[cell].style.backgroundColor != "blue"){
+			cells[cell].style.backgroundColor = colour;
+			placed = true;
+		}
+	}
+	return cell;
+}
+function play(){
+	if(red != 100){
+		red = move(red, "red");
+	}
+	if(blue != 100){
+		blue = move(blue, "blue");
+	}
+}
+var time = setInterval(play, 250);
+function move(cell, colour){
+	if(cells[cell].parentElement.id != "bottom" && cells[cell+10].style.backgroundColor != "red" && cells[cell+10].style.backgroundColor != "blue"){
+		cells[cell+10].style.backgroundColor = colour;
+		return cell+10;
+	}
+	else if(cells[cell].className != "right" && cells[cell+1].style.backgroundColor != "red" && cells[cell+1].style.backgroundColor != "blue"){
+		cells[cell+1].style.backgroundColor = colour;
+		return cell+1;
+	}
+	else if(cells[cell].className != "left" && cells[cell-1].style.backgroundColor != "red" && cells[cell-1].style.backgroundColor != "blue"){
+		cells[cell-1].style.backgroundColor = colour;
+		return cell-1;
+	}
+	else if(cells[cell].parentElement.id != "top" && cells[cell-10].style.backgroundColor != "red" && cells[cell-10].style.backgroundColor != "blue"){
+		cells[cell-10].style.backgroundColor = colour;
+		return cell-10;
+	}
+	else{
+		cells[cell].style.backgroundColor = "yellow";
+		return 100;
+	}
+}
+</script>
+</body>
+</html>

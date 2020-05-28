@@ -1,0 +1,48 @@
+2020-05-25T01:14:35+00:00 CRITICAL Uncaught Error: Call to undefined function get_price() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:228
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(22): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 228
+
+2020-05-25T01:21:04+00:00 CRITICAL Uncaught Error: Call to undefined function get_image() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:228
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(22): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 228
+
+2020-05-25T01:30:04+00:00 CRITICAL Object of class WP_Error could not be converted to string in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 229
+
+2020-05-25T01:34:24+00:00 CRITICAL Uncaught Error: Call to a member function get_price_html() on null in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:229
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(22): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 229
+
+2020-05-25T01:35:12+00:00 CRITICAL syntax error, unexpected '?>' in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 229
+
+2020-05-25T01:35:15+00:00 CRITICAL Uncaught Error: Call to a member function get_price_html() on null in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:229
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(22): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 229
+
+2020-05-25T02:01:31+00:00 CRITICAL Uncaught Error: Call to a member function have_posts() on null in /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php:25
+Stack trace:
+#0 /home/ubuntu/environment/wp-includes/template-loader.php(106): include()
+#1 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#3 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php on line 25
+

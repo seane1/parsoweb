@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seane Parsonson | Portfolio</title>
+
+<!--font-family:"Arial Black", Gadget, sans-serif;-->
+<style>
+html{height:100%;}
+body{border:0px;margin:0px;box-sizing:border-box;font-family:arial;height:100%;background-color:red;}
+.title{display:inline-block;width:100%;text-align:center;font-weight:bold;font-style:italic;font-family:"Arial Black", Gadget, sans-serif;font-size:1.35em;}
+.main{display:inline-block;width:100%;background-image:url("frazetta.jpg");background-repeat:round;overflow:hidden;}
+.side{display:inline-block;width:25%;}
+.menu{display:inline-block;width:50%;margin-top:1.5%;text-align:center;}
+.menu form{display:inline-block;width:35%;}
+.menu button{height:33.44vh;width:100%;margin:0px;font-size:1.25em;color:white;border:none;cursor:pointer;-webkit-transition-duration: 0.4s;transition-duration:0.4s;opacity:0.6;box-sizing:border-box;}
+.menu button:hover{opacity:1;}
+.menu button:focus{outline:none;}
+.a{background-color:DarkRed;}
+.b{background-color:Firebrick;}
+.c{background-color:Tomato;} /*#ffcf40*/
+.d{background-color:Brown;}
+.footer{text-align:center;width:100%;display:inline-block;}
+.dropdown{display:none;}
+.dropmenu{display:none;}
+@media only screen and (max-width:600px){
+	.title{font-size:1.25em;}
+	.main{background-image:url("frazetta2.jpg");height:58.75vh;}
+	.side{width:0%;}
+	.menu{display:none;}
+	.dropdown{display:block;}
+	.dropmenu.clicked{display:block;}
+	.dropmenu.clicked a{text-decoration:none;color:white;display:block;text-align:center;font-size:1.25em;padding:20px;}
+	.dropdown a{text-decoration:none;color:white;display:block;text-align:center;font-size:1.25em;padding:20px;}
+	.da{background-color:maroon;}
+	.db{background-color:DarkRed;}
+	.dc{background-color:Firebrick;}
+	.dd{background-color:Brown;}
+	.de{background-color:Tomato;}
+}
+@media only screen and (min-width:600px){
+	.title{font-size:1.27em;}
+	.menu{width:80%;}
+	.side{width:10%;}
+}
+@media only screen and (min-width:1000px){
+	.title{font-size:1.30em;}
+	.menu{width:60%;}
+	.side{width:20%;}
+}
+@media only screen and (min-width:1200px){
+	.title{font-size:1.35em;}
+	.menu{width:50%;}
+	.side{width:25%;}
+}
+</style>
+</head>
+<body>
+<div class = "title"><h1>SEANE PARSONSON</h1></div>
+<div class = "dropdown">
+<a class = "da" href = "javascript:void(0);" onclick="myFunction()">Portfolio</a>
+</div>
+<div class = "dropmenu" id = "drop">
+<a class = "db" href = "index1.html">Single Page Website</a>
+<a class = "dc" href = "games/lightcycle.html">Light Cycle</a>
+<a class = "dd" href = "bootstrap.html">Bootstrap Site</a>
+<a class = "de" href = "games/rome.html">Gangs of Rome</a>
+</div>
+<div class ="main">
+<div class = "side"></div>
+<div class="menu">
+<form action = "index1.html">
+<button class="a">Single Page Website</button>
+</form>
+<form action = "games/lightcycle.html">
+<button class="b">Light Cycle</button>
+</form>
+<form action = "games/rome.html">
+<button class="c">Gangs of Rome</button>
+</form>
+<form action = "bootstrap.html">
+<button class="d">Bootstrap Site</button>
+</form>
+</div>
+<div class = "side"></div>
+</div>
+<div class="footer"><p>Seane Parsonson &copy; 2019</p></div>
+<script>
+function myFunction() {
+  var x = document.getElementById("drop");
+  if (x.className === "dropmenu") {
+    x.className += " clicked";
+  } else {
+    x.className = "dropmenu";
+  }
+}
+</script>
+</body>
+</html>

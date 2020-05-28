@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rome</title>
+<style>
+body{margin:0px;padding:0px;}
+table{border:10px solid black;width:40%;margin-left:30%;margin-right:30%;}
+table td{height:7vh;}
+@media (max-width:1000px){
+	table{width:100%;margin:0px;}
+	table td{height:5vh;}
+}
+</style>
+</head>
+<body>
+<table>
+<tr id="top">
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+<tr id="bottom">
+<td class="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td class="right"></td>
+</tr>
+</table>
+<script>
+var cells = document.getElementsByTagName("td");
+for (var i = 0; i < 45; i++){
+	var x = Math.floor(Math.random() * 100);
+	cells[x].style.backgroundColor = "firebrick";
+}
+var bluefighter1 = place("blue");
+var bluefighter2 = place("blue");
+var redfighter1 = place("red");
+var redfighter2 = place("red");
+var lion = place("yellow");
+function place(colour){
+	var cell;
+	var placed = false;
+	while(placed != true){
+		cell = Math.floor(Math.random() * 100);
+		if(cells[cell].style.backgroundColor != "firebrick" && cells[cell].style.backgroundColor != "blue" && cells[cell].style.backgroundColor != "yellow" && cells[cell].style.backgroundColor != "red"){
+			cells[cell].style.backgroundColor = colour;
+			placed = true;
+		}
+	}
+	return cell;
+}
+function play(){
+	if(bluefighter1 != 100){
+		bluefighter1 = move(bluefighter1, "blue");
+	}
+	if(bluefighter2 != 100){
+		bluefighter2 = move(bluefighter2, "blue");
+	}
+	if(redfighter1 != 100){
+		redfighter1 = move(redfighter1, "red");
+	}
+	if(redfighter2 != 100){
+		redfighter2 = move(redfighter2, "red");
+	}
+	if(lion != 100){
+		lion = move(lion, "yellow");
+	}
+}
+var time = setInterval(play, 200);
+function move(fighter, colour){
+	var move = Math.floor(Math.random() * 4);
+	if(move == 0 && cells[fighter].parentElement.id != "top" && cells[fighter-10].style.backgroundColor != "firebrick" && cells[fighter-10].style.backgroundColor != "blue" && cells[fighter-10].style.backgroundColor != "yellow" && cells[fighter-10].style.backgroundColor != "red"){
+			cells[fighter].style.backgroundColor = "";
+			cells[fighter-10].style.backgroundColor = colour;
+			return fighter-10;
+	}
+	if(move == 1 && cells[fighter].parentElement.id != "bottom" && cells[fighter+10].style.backgroundColor != "firebrick" && cells[fighter+10].style.backgroundColor != "blue" && cells[fighter+10].style.backgroundColor != "yellow" && cells[fighter+10].style.backgroundColor != "red"){
+		cells[fighter].style.backgroundColor = "";
+		cells[fighter+10].style.backgroundColor = colour;
+		return fighter+10;
+	}
+	if(move == 2 && cells[fighter].className != "left" && cells[fighter-1].style.backgroundColor != "firebrick" && cells[fighter-1].style.backgroundColor != "blue" && cells[fighter-1].style.backgroundColor != "yellow" && cells[fighter-1].style.backgroundColor != "red"){
+		cells[fighter].style.backgroundColor = "";
+		cells[fighter-1].style.backgroundColor = colour;
+		return fighter-1;
+	}
+	if(move == 3 && cells[fighter].className != "right" && cells[fighter+1].style.backgroundColor != "firebrick" && cells[fighter+1].style.backgroundColor != "blue" && cells[fighter+1].style.backgroundColor != "yellow" && cells[fighter+1].style.backgroundColor != "red"){
+		cells[fighter].style.backgroundColor = "";
+		cells[fighter+1].style.backgroundColor = colour;
+		return fighter+1;
+	}
+	else return fighter;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[27-Apr-2020 02:37:09 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method WP_Error::load() in /home/t83zmssjy6nc/public_html/wordpress/wp-content/plugins/coblocks/includes/admin/class-coblocks-crop-settings.php:198
+Stack trace:
+#0 /home/t83zmssjy6nc/public_html/wordpress/wp-content/plugins/coblocks/includes/admin/class-coblocks-crop-settings.php(151): CoBlocks_Crop_Settings->image_media_crop(15, 0, 0, 100, 100, 0)
+#1 /home/t83zmssjy6nc/public_html/wordpress/wp-includes/class-wp-hook.php(287): CoBlocks_Crop_Settings->api_crop('')
+#2 /home/t83zmssjy6nc/public_html/wordpress/wp-includes/class-wp-hook.php(311): WP_Hook->apply_filters('', Array)
+#3 /home/t83zmssjy6nc/public_html/wordpress/wp-includes/plugin.php(478): WP_Hook->do_action(Array)
+#4 /home/t83zmssjy6nc/public_html/wordpress/wp-admin/admin-ajax.php(175): do_action('wp_ajax_coblock...')
+#5 {main}
+  thrown in /home/t83zmssjy6nc/public_html/wordpress/wp-content/plugins/coblocks/includes/admin/class-coblocks-crop-settings.php on line 198

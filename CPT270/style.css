@@ -1,0 +1,90 @@
+/* Insert your styles here */
+html{scroll-behavior:smooth;}
+@font-face{font-family:Anton;src:url(media/Anton-Regular.ttf);}
+@font-face{font-family:Roboto;src:url(media/Roboto-Regular.ttf);}
+@font-face{font-family:Deco;src:url(media/American-Captain.ttf);}
+body{background-color:dimgrey;margin-left:auto;margin-right:auto;width:80%;font-family:Roboto;}
+main{background-color:white;}
+header{text-align:center;color:white;background-color:black;padding:10px;}
+header h1{padding:10px;display:inline-block;vertical-align:middle;font-family:Deco;font-size:3em;font-weight:normal;}
+header img{height:100px;width:100px;border-radius:50px;display:inline-block;vertical-align:middle;}
+nav{background-color:black;text-align:center;position: -webkit-sticky;position:sticky;top:0;}
+nav a{display:inline-block;padding:20px 40px;text-decoration:none;color:white;font-family:Anton;}
+nav a.current{background-color:white;color:black;}
+section{min-height:100vh;background-color:white;padding:60px;display:inline-block;width:100%;box-sizing:border-box;}
+section img{width:100%;}
+section h2{text-align:center;font-family:Anton;}
+#prices{background-image:url("media/HOTA-cinema.jpg");background-attachment:fixed;background-position:center;background-repeat:no-repeat;background-size:cover;color:white;}
+figcaption{text-align:center;}
+table{border:3px solid white;border-radius:10px;padding:10px;line-height:150%;}
+.seatimgs{display:grid;grid-template-columns:50% 50%;}
+.container{display:grid;grid-template-columns:50% 50%;}
+.container a{text-decoration:none;color:black;}
+.panel{display:grid;grid-template-areas:'poster ptitle' 'poster ptimes';border-bottom:1px solid grey;cursor:pointer;}
+.active, .panel:hover{background-color:lightgrey;}
+.panel ul{grid-area:ptimes;list-style-type:none;line-height:150%;}
+.panel img{grid-area:poster;height:250px;width:200px;padding:20px;margin-left:auto;margin-right:auto;}
+.panel h3{grid-area:ptitle;background-color:black;color:white;font-family:Anton;text-align:center;padding:10px;font-weight:normal;}
+#synopsis{padding-top:40px;}
+.synopsis{display:grid;grid-template-areas:'stitle video' 'plot video' 'stimes stimes';padding:20px;}
+.buttons{grid-area:stimes;}
+.buttons button{font-size:1.1em;padding:10px 20px;cursor:pointer;font-family:Anton;background-color:black;color:white;border:none;}
+.buttons button:hover{background-color:white;color:black;border:3px solid black;}
+.synopsis h3{grid-area:stitle;}
+.synopsis video{grid-area:video;padding:20px;}
+.synopsis p{grid-area:plot;line-height:150%;}
+.booking{padding:20px;}
+.booking form{display:grid;grid-template-areas:'btitle btitle''standard customer' 'standard customer' 'first customer' 'first submit';width:80%;margin-left:auto;margin-right:auto;padding:20px;border:1px solid grey;box-sizing:border-box;}
+.booking input{border-radius: 4px;margin:10px;}
+.booking input[invalid]:invalid{border:1px solid red;}
+.booking select{border-radius: 4px;}
+.booking p{text-align:right;}
+.booking h3{grid-area:btitle;}
+.standard{grid-area:standard;width:80%;box-sizing:border-box;}
+.first{grid-area:first;width:80%;box-sizing:border-box;}
+.customer{grid-area:customer;width:85%;box-sizing:border-box;}
+.submit{grid-area:submit;}
+.submit input{color:white;background-color:black;border:none;font-size:1.1em;font-weight:normal;padding:20px;cursor:pointer;font-family:Anton;}
+.submit input:hover{color:black;background-color:white;border:3px solid black;}
+.seat{display:none;}
+.error{color:red;}
+footer{background-color:black;color:white;text-align:center;padding:20px;}
+footer h1{padding:10px;display:inline-block;vertical-align:middle;font-size:1.5em;font-family:Deco;font-weight:normal;}
+footer img{height:50px;width:50px;border-radius:50px;display:inline-block;vertical-align:middle;}
+@media (max-width:750px){
+	.synopsis{grid-template-areas:'stitle stitle' 'video video' 'plot plot' 'stimes stimes';}
+	.synopsis video{margin-left:auto;margin-right:auto;}
+	.booking{padding-left:0px;padding-right:0px;}
+	.booking form{grid-template-areas:'btitle''standard' 'first' 'customer' 'submit';}
+	.standard{width:100%;}
+	.first{width:100%;}
+	.customer{width:100%;}
+	.seatsdiv{grid-template-columns:auto;}
+	.total{grid-row:2;}
+	.ticket{grid-template-columns:auto;}
+	.item2{grid-row:2;}
+}
+@media (max-width:1200px){
+	body{margin:0px;width:100%;font-size:1.2em;}
+	header h1{font-size:2em;}
+	section{padding:40px;}
+	nav a{padding:15px 20px;}
+	.container{grid-template-columns:auto;}
+	.panel img{height:250px;width:150px;}
+	.seatimgs{grid-template-columns:auto;}
+	.booking form{width:100%;margin:0px;}
+}
+.hide{display:none;}
+.receipt{padding:20px;border-bottom:2px dotted black;}
+.receipt h2{text-align:center;}
+.seatsdiv{display:grid;grid-template-columns:auto auto;}
+.seatsdiv p{text-align:right;}
+.date{float:right;}
+.ticket{padding:20px;display:grid;grid-template-columns:auto auto;border-bottom:2px dotted black;}
+@media print{
+	nav{display:none;}
+	footer{display:none;}
+	.debug{display:none;}
+	.receipt{page-break-inside: avoid;}
+	.ticket{page-break-inside: avoid;}
+}

@@ -1,0 +1,38 @@
+2020-05-21T02:05:50+00:00 CRITICAL syntax error, unexpected end of file in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 189
+
+2020-05-21T02:41:15+00:00 CRITICAL Uncaught Error: Call to undefined function get_image() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:230
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(21): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 230
+
+2020-05-21T02:41:25+00:00 CRITICAL Uncaught Error: Call to undefined function get_image() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:230
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(21): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 230
+
+2020-05-21T02:41:30+00:00 CRITICAL Uncaught Error: Call to undefined function get_image() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:230
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(21): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 230
+
+2020-05-21T03:13:36+00:00 CRITICAL Uncaught Error: Call to undefined function get_image_id() in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php:228
+Stack trace:
+#0 /home/ubuntu/environment/wp-content/themes/bestbooks/page-genres.php(21): genres()
+#1 /home/ubuntu/environment/wp-includes/template-loader.php(106): include('/home/ubuntu/en...')
+#2 /home/ubuntu/environment/wp-blog-header.php(19): require_once('/home/ubuntu/en...')
+#3 /home/ubuntu/environment/index.php(17): require('/home/ubuntu/en...')
+#4 {main}
+  thrown in /home/ubuntu/environment/wp-content/themes/bestbooks/inc/template-tags.php on line 228
+
