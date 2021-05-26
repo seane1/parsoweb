@@ -89,6 +89,21 @@ img{
 	margin-left:20%;
 	margin-right:20%;
 	}/**Styles all image containers other than home page**/
+.top-link a{
+	text-decoration:none;
+	color:white;
+	font-family: Roboto-Black;
+	background-color:#A5D8C2;
+	padding:10px 20px;
+}
+.top-link a:hover{
+	color:#A5D8C2;
+	background-color:white;
+}
+.top-link a:active{
+	color:#A5D8C2;
+	background-color:white;
+}
 #contact{
 	background-color:#A5D8C2;
 	color:white;
@@ -105,7 +120,7 @@ img{
 	color:white;
 	padding:20px;
 	}
-@media (max-width:450px){/**Rules for smaller screen sizes**/
+@media (max-width:600px){/**Rules for smaller screen sizes**/
 	body{
 		font-size:1.3em;
 		}

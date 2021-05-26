@@ -1,0 +1,49 @@
+body{position:relative;background-color:#dddddd;font-family:"Arial", Helvetica, sans-serif;}
+h1{color:white;position:absolute;left:20%;top:40px;font-size:75px;}
+.landing{}
+p{padding:15px;}
+.main{position:absolute;left:20%;background-color:white;width:70%;position:relative;box-shadow: 5px 5px 5px #bbbbbb;}
+.topmenu{width:100%;display:inline-block;background-color:grey;}
+.toplink{float:right;text-decoration:none;color:#dddddd;padding:10px;border-style:solid;border-width:0px 1px;}
+.toplink:hover, .toplink:active{color:white;}
+.welcome{color:#dddddd;float:right;padding:10px;}
+.logout{display:inline-block;float:right;}
+.logout button{text-decoration:none;color:#dddddd;background-color:grey;padding:10px;font-size:16px;border:none;cursor:pointer;}
+.logout button:hover{color:white;}
+.menu{display:inline-block;position:relative;width:100%;background-color:grey;box-shadow: 5px 5px 5px #bbbbbb;}
+.basketlink{border-style:solid;border-width:0px 1px;color:white;font-size:16px;text-decoration:none;padding:16px 25px;background-color:blue;float:right;}
+.total{float:right;padding:16px 25px;background-color:blue;color:white;}
+.drop{display:inline-block;}
+.button{background-color:black;color:white;padding:16px 25px;;font-size:16px;border:none;cursor:pointer;margin-right:10px;}
+.dropdown{display:none;position:absolute;background-color:white;min-width:160px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index:1;}
+.dropdown a{color:black;padding:12px 16px;text-decoration:none;display:block;}
+.dropdown a:hover{background-color:grey;}
+.drop:hover .dropdown{display:block;}
+.drop:hover .button{background-color:blue;}
+.mlink{text-decoration:none;color:white;background-color:black;padding:16px 25px;font-size:16px;margin-right:10px;}
+.mlink:hover{background-color:blue;}
+.search{width:100%;background-color:white;height:80px;}
+.search img{float:left;margin:4px;}
+.search input{float:right;width:50%;margin-top:19px;margin-right:19px;min-width:350px;padding:12px 20px;}
+.search button{float:right;margin-top:19px;margin-right:19px;padding:14px 25px;}
+.sbutton{color:white;background-color:#143484;border:none;cursor:pointer;}
+.sbutton:hover{background-color:#3ba09d;}
+.results{width:100%;}
+h3{margin-left:21%;text-shadow:2px 2px 2px #bbbbbb;}
+.book{margin:15px; display:inline-block;width:125px;font-size:13px;}
+.book img{display:block;height:200px;}
+.book a{display:block;text-decoration:none; margin-top:5px; color:black;}
+.book a:hover{text-decoration:underline;}
+.titlelink{font-weight:bold;text-shadow:1px 1px 1px #bbbbbb;}
+.book .authorlink{text-decoration:underline dotted;}
+.book p{color:blue;font-weight:bold;margin-top:10px;padding:0;}
+.productinfo{}
+.product img{float:left;margin:15px;}
+.product a{text-decoration:none; color:black;}
+.product a:hover{text-decoration:underline;}
+.product .authorlink{text-decoration:underline dotted;}
+#login{width:100%;left:0;}
+.forms form{display:inline-block;margin-left:10%;width:30%;}
+.forms input{padding:12px 20px;width:100%;min-width:200px;}
+.forms button{padding:16px 52%;font-size:16px;}
+.footer{width:100%;background-color:grey;margin-top:100px;box-shadow: 5px 5px 5px #bbbbbb;}

@@ -63,16 +63,13 @@
     --go-site-title--font-family: var(--go-navigation--font-family);
     --go-site-title--text-transform: uppercase;
     --go-site-title--letter-spacing: 3px;
-}
-
-:root {
     --go-site-description--color--text: #000;
     --go-site-description--color--text: var(--go-heading--color--text);
     --go-site-description--opacity: 1;
-    --go-site-description--font-size: .65rem;
+    --go-site-description--font-size: .75rem;
     --go-site-description--font-family: "Montserrat", sans-serif;
-    --go-site-description--font-weight: 700;
-    --go-site-description--letter-spacing: 10px;
+    --go-site-description--font-weight: 400;
+    --go-site-description--letter-spacing: 0;
     --go-navigation--color--text: #000;
     --go-navigation--color--text: var(--go-heading--color--text);
     --go-navigation--font-family: "Montserrat", sans-serif;
@@ -88,17 +85,11 @@
     --go-search-button--color--background-interactive: var(--go-heading--color--text);
     --go-social--size: 1.5rem;
     --go-social--padding: .75rem;
-}
-
-:root {
     --go-meta--color--text: #000;
     --go-meta--color--text: var(--go-heading--color--text);
     --wp-block-coblocks-features--heading--margin-bottom: 1rem;
     --wp-block-coblocks-features--icon--margin-bottom: 1.75rem;
     --wp-block-coblocks-food-item--heading--font-weight: 700;
-    --editor-title--font-size: 2em;
-    --editor-max-w-base: 633px;
-    --editor-max-w-wide: 1280px;
 }
 
 /*! Modern: CoBlocks Carousel */
@@ -234,19 +225,16 @@
     display: none !important;
 }
 
-@media (min-width:960px) {
+@media only screen and (min-width:960px) {
     :root {
         --go-site-title--font-size: 1.5rem;
     }
 }
 
-@media (min-width:782px) {
+@media only screen and (min-width:782px) {
     :root {
         --go-social--size: 2rem;
         --go-social--padding: 1rem;
-    }
-    :root {
-        --editor-title--font-size: 3.65em;
     }
     .wp-block-coblocks-gallery-carousel .flickity-button.previous {
         right: 25px;

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single Page Design Site</title>
+<style>
+body{margin:0px;font-family:Arial;}
+h3{padding:5px 20px;}
+p{padding:5px 20px;}
+input{padding:20px 20px;width:70%;margin:0px;font-size:1em;}
+button{padding:20px 40px;background-color:LightGrey;border:none;font-size:1.15em;color:white;}
+button:hover{background-color:DarkGrey;cursor:pointer;}
+button:focus {outline:0;}
+#home{width:100%;}
+#splash{width:100%;min-width:1280px;}
+#gallery img{width:900px;height:500px;}
+.slideshow{width:900px;margin-left:auto;margin-right:auto;}
+.nav{width:100%;display:inline-block;background-color:LightGrey;margin:0px;padding:0px;position:sticky;top:0;}
+.menu a{background-color:LightGrey;color:white;cursor:pointer;border:none;padding:20px 40px;font-size:32px;transition: 0.3s;text-decoration:none;display:inline-block;}
+.menu a:hover{background-color:DarkGrey;}
+.menu a.active{background-color:DarkGrey;}
+.menu{display:block;margin-left:17%;}
+.body{width:100%;display:inline-block;background-color:DarkGrey;margin:0px;padding:0px;}
+.content{display:none;overflow:hidden;width:88%;background-color:GhostWhite;margin-left:auto;margin-right:auto;}
+#aboutpic{width:800px;margin-right:auto;margin-left:auto;display:block;animation-name:fade;animation-duration: 1.5s;}
+.social{display:block;margin-left:37%;}
+.footer{width:100%;}
+@media screen and (max-width:600px){
+	.nav{position:relative;}
+	.menu{margin-left:10%;}
+	.menu a:not(:first-child) {display: none;}
+	.menu #icon{display:inline-block;}
+	.content{width:100%;font-size:1.25em;}
+	.social{margin-left:17%;}
+}
+#icon{display:none;}
+.menu.phone a{display:block;}
+.slides{display:none;}
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+</style>
+</head>
+<body>
+<div class = "nav">
+<div class = "menu" id = "menu">
+<a href = "#Home" class = "link" onclick = "display(event, 'home')">Design Site</a>
+<a href = "#Gallery" class = "link" onclick = "display(event, 'gallery')">Gallery</a>
+<a href = "#About" class = "link" onclick = "display(event, 'about')">About</a>
+<a href = "#Contact" class = "link" onclick = "display(event, 'contact')">Contact</a>
+<a href = "javascript:void(0);" id = "icon" onclick = "myFunction()"><img src = "burgerIcon.png" style = "height:30px;width:30px;" alt="menu icon"></a>
+</div>
+</div>
+<div class = "body">
+<div class = "content" id = "home"><img id="splash" src = "image1.jpg" alt="Home image"></div>
+<div class = "content" id = "gallery">
+<div class = "slideshow">
+<div class = "slides fade"><img src = "slide1.jpg" alt="Slideshow Image"></div>
+<div class = "slides fade"><img src = "slide2.jpg" alt="Slideshow Image"></div>
+<div class = "slides fade"><img src = "slide3.jpg" alt="Slideshow Image"></div>
+<div class = "slides fade"><img src = "slide4.jpg" alt="Slideshow Image"></div>
+</div>
+</div>
+<div class = "content" id = "about">
+<h3>About Interior Design Site</h3>
+<p><img id = "aboutpic" src = "about.jpg" alt="about image"></p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+<div class = "content" id = "contact">
+<h3>Information/Queries</h3>
+<form>
+<p>
+<input type = "text" name = "firstname" placeholder = "First name"><br>
+<input type = "text" name = "lastname" placeholder = "Last name"><br>
+<input type = "text" name = "question"  placeholder = "Question">
+</p>
+<p><button>Submit</button></p>
+</form>
+</div>
+</div>
+<div class = "footer">
+<div class = "social">
+<a href = "#facebook"><img src = "face.jpg" alt="facebook"></a>
+<a href = "#instagram"><img src = "insta.jpg" alt="instagram"></a>
+<a href = "#email"><img src = "email.jpg" alt="email"></a>
+</div>
+</div>
+<script>
+document.getElementById('home').style.display = "block";
+function display(evt, name){
+	var i, content, links;
+	
+	content = document.getElementsByClassName('content');
+	for(i = 0; i < content.length; i++){
+		content[i].style.display = "none";
+	}
+	
+	link = document.getElementsByClassName('link');
+	for(i = 0; i < link.length; i++){
+		link[i].className = link[i].className.replace(" active", "");
+	}
+	
+	document.getElementById(name).style.display = "block";
+	evt.currentTarget.className += " active";
+	
+}
+function myFunction(){
+	var x = document.getElementById("menu");
+	if (x.className === "menu") {
+		x.className += " phone";
+	} 
+	else {
+		x.className = "menu";
+	}
+} 
+</script>
+<script>
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("slides");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  
+  slides[slideIndex-1].style.display = "block";  
+ 
+  setTimeout(showSlides, 4000); 
+}
+</script>
+</body>
+</html>

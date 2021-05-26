@@ -21,6 +21,7 @@ function setup() {
 		return __NAMESPACE__ . "\\$function";
 	};
 
+	add_action( 'after_setup_theme', $n( 'development_environment' ) );
 	add_action( 'after_setup_theme', $n( 'i18n' ) );
 	add_action( 'after_setup_theme', $n( 'theme_setup' ) );
 	add_action( 'admin_init', $n( 'editor_styles' ) );
@@ -33,6 +34,20 @@ function setup() {
 	add_filter( 'nav_menu_item_title', $n( 'add_dropdown_icons' ), 10, 4 );
 	add_filter( 'go_page_title_args', $n( 'filter_page_titles' ) );
 	add_filter( 'comment_form_defaults', $n( 'comment_form_reply_title' ) );
+	add_filter( 'the_content_more_link', $n( 'read_more_tag' ) );
+
+}
+
+/**
+ * Check if this is an install is a local development environment
+ */
+function development_environment() {
+
+	if ( is_readable( get_template_directory() . '/.dev/assets/development-environment.php' ) ) {
+
+		require_once get_template_directory() . '/.dev/assets/development-environment.php';
+
+	}
 
 }
 
@@ -126,7 +141,7 @@ function theme_setup() {
 	add_theme_support(
 		'custom-background',
 		array(
-			'default-color' => \Go\get_palette_color( 'background' ),
+			'default-color' => \Go\get_palette_color( 'background', 'HEX' ),
 		)
 	);
 
@@ -154,8 +169,8 @@ function theme_setup() {
 	// Add support for editor styles.
 	add_theme_support( 'editor-styles' );
 
-	// Add support for core block styles.
-	add_theme_support( 'wp-block-styles' );
+	// Add support for experimental link colors.
+	add_theme_support( 'experimental-link-color' );
 
 	// Add custom editor font sizes.
 	add_theme_support(
@@ -215,6 +230,38 @@ function theme_setup() {
 		);
 
 		add_theme_support( 'editor-color-palette', $color_palette );
+
+		$primary_color    = \Go\get_palette_color( 'primary', 'RGB' );
+		$secondary_color  = \Go\get_palette_color( 'secondary', 'RGB' );
+		$tertiary_color   = \Go\get_palette_color( 'tertiary', 'RGB' );
+		$background_color = \Go\get_palette_color( 'background', 'RGB' );
+
+		add_theme_support(
+			'editor-gradient-presets',
+			array(
+				array(
+					'name'     => __( 'Primary to Secondary', 'go' ),
+					'gradient' => 'linear-gradient(135deg, ' . esc_attr( $primary_color ) . ' 0%, ' . esc_attr( $secondary_color ) . ' 100%)',
+					'slug'     => 'primary-to-secondary',
+				),
+				array(
+					'name'     => __( 'Primary to Tertiary', 'go' ),
+					'gradient' => 'linear-gradient(135deg, ' . esc_attr( $primary_color ) . ' 0%, ' . esc_attr( $tertiary_color ) . ' 100%)',
+					'slug'     => 'primary-to-tertiary',
+				),
+				array(
+					'name'     => __( 'Primary to Background', 'go' ),
+					'gradient' => 'linear-gradient(135deg, ' . esc_attr( $primary_color ) . ' 0%, ' . esc_attr( $background_color ) . ' 100%)',
+					'slug'     => 'primary-to-background',
+				),
+				array(
+					'name'     => __( 'Secondary to Tertiary', 'go' ),
+					'gradient' => 'linear-gradient(135deg, ' . esc_attr( $secondary_color ) . ' 0%, ' . esc_attr( $background_color ) . ' 100%)',
+					'slug'     => 'secondary-to-tertiary',
+				),
+			)
+		);
+
 	}
 
 }
@@ -226,30 +273,21 @@ function fonts_url() {
 
 	$design_style = get_design_style();
 
-	if ( ! $design_style ) {
+	if ( ! isset( $design_style['fonts'] ) ) {
 
 		return;
 
 	}
+
+	$cur_fonts = get_theme_mod( 'fonts', $design_style['fonts'] );
 
 	$design_styles = get_available_design_styles();
-	$design_style  = $design_style['slug'];
-
-	if (
-		! isset( $design_styles[ $design_style ] ) ||
-		! isset( $design_styles[ $design_style ]['fonts'] ) ||
-		empty( $design_styles[ $design_style ]['fonts'] )
-	) {
-
-		return;
-
-	}
 
 	$fonts = array();
 
-	foreach ( $design_styles[ $design_style ]['fonts'] as $font => $font_weights ) {
+	foreach ( $cur_fonts as $font => $font_weights ) {
 
-		$fonts[] = sprintf( '%1$s:%2$s', $font, implode( ',', $font_weights ) );
+		$fonts[] = sprintf( '%1$s:%2$s', str_replace( array( '_heading', '_body' ), '', $font ), implode( ',', $font_weights ) );
 
 	}
 
@@ -276,8 +314,9 @@ function fonts_url() {
 	return esc_url_raw(
 		add_query_arg(
 			array(
-				'family' => rawurlencode( implode( '|', $fonts ) ),
-				'subset' => rawurlencode( 'latin,latin-ext' ),
+				'family'  => rawurlencode( implode( '|', $fonts ) ),
+				'subset'  => rawurlencode( 'latin,latin-ext' ),
+				'display' => 'swap',
 			),
 			'https://fonts.googleapis.com/css'
 		)
@@ -296,12 +335,10 @@ function block_editor_assets() {
 	// phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	require_once get_parent_theme_file_path( 'includes/customizer.php' );
 
-	$suffix = SCRIPT_DEBUG ? '' : '.min';
-
 	wp_enqueue_script(
 		'go-block-filters',
-		get_theme_file_uri( "dist/js/admin/block-filters{$suffix}.js" ),
-		array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
+		wp_unslash( get_theme_file_uri( 'dist/js/admin/block-filters.js' ) ),
+		array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-components' ),
 		GO_VERSION,
 		true
 	);
@@ -316,7 +353,8 @@ function block_editor_assets() {
 		'go-block-filters',
 		'GoBlockFilters',
 		array(
-			'inlineStyles' => $styles,
+			'inlineStyles'   => str_replace( ':root', '.editor-styles-wrapper', $styles ),
+			'showPageTitles' => (bool) get_theme_mod( 'page_titles', true ),
 		)
 	);
 
@@ -348,9 +386,10 @@ function scripts() {
 
 	wp_localize_script(
 		'go-frontend',
-		'GoText',
+		'goFrontend',
 		array(
-			'searchLabel' => esc_html__( 'Expand search field', 'go' ),
+			'openMenuOnHover' => (bool) get_theme_mod( 'open_menu_on_hover', true ),
+			'isMobile'        => (bool) wp_is_mobile(),
 		)
 	);
 
@@ -649,6 +688,8 @@ function get_available_design_styles() {
 					'700',
 				),
 			),
+			'font_size'      => '1.05rem',
+			'type_ratio'     => '1.275',
 			'viewport_basis' => '900',
 		),
 		'modern'      => array(
@@ -687,20 +728,22 @@ function get_available_design_styles() {
 				),
 			),
 			'fonts'          => array(
-				'Montserrat' => array(
+				'Heebo'      => array(
+					'800',
 					'400',
-					'700',
 				),
 				'Fira Code'  => array(
 					'400',
 					'400i',
 					'700',
 				),
-				'Heebo'      => array(
+				'Montserrat' => array(
 					'400',
-					'800',
+					'700',
 				),
 			),
+			'font_size'      => '0.85rem',
+			'type_ratio'     => '1.3',
 			'viewport_basis' => '950',
 		),
 		'trendy'      => array(
@@ -758,6 +801,8 @@ function get_available_design_styles() {
 					'700',
 				),
 			),
+			'font_size'      => '1.1rem',
+			'type_ratio'     => '1.2',
 			'viewport_basis' => '850',
 		),
 		'welcoming'   => array(
@@ -810,6 +855,8 @@ function get_available_design_styles() {
 					'700',
 				),
 			),
+			'font_size'      => '1rem',
+			'type_ratio'     => '1.235',
 			'viewport_basis' => '750',
 		),
 		'playful'     => array(
@@ -860,14 +907,16 @@ function get_available_design_styles() {
 				),
 			),
 			'fonts'          => array(
+				'Poppins'   => array(
+					'600',
+				),
 				'Quicksand' => array(
 					'400',
 					'600',
 				),
-				'Poppins'   => array(
-					'700',
-				),
 			),
+			'font_size'      => '1.1rem',
+			'type_ratio'     => '1.215',
 			'viewport_basis' => '950',
 		),
 	);
@@ -1099,6 +1148,16 @@ function get_available_social_icons() {
 			'icon'        => get_theme_file_path( 'dist/images/social/pinterest.svg' ),
 			'placeholder' => 'https://pinterest.com/user',
 		),
+		'youtube'   => array(
+			'label'       => esc_html__( 'YouTube', 'go' ),
+			'icon'        => get_theme_file_path( 'dist/images/social/youtube.svg' ),
+			'placeholder' => 'https://youtube.com/user',
+		),
+		'github'    => array(
+			'label'       => esc_html__( 'GitHub', 'go' ),
+			'icon'        => get_theme_file_path( 'dist/images/social/github.svg' ),
+			'placeholder' => 'https://github.com/user',
+		),
 	);
 
 	/**
@@ -1280,4 +1339,15 @@ function filter_page_titles( $args ) {
 
 	return $args;
 
+}
+
+/**
+ * Overwrite default more tag with styling and screen reader markup.
+ *
+ * @param string $html The default output HTML for the more tag.
+ *
+ * @return string $html
+ */
+function read_more_tag( $html ) {
+	return preg_replace( '/<a(.*)>(.*)<\/a>/iU', sprintf( '<div class="read-more-button-wrap"><a$1><span class="button">$2</span> <span class="screen-reader-text">"%1$s"</span></a></div>', get_the_title( get_the_ID() ) ), $html );
 }

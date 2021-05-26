@@ -28,6 +28,7 @@ function setup() {
 	add_action( 'customize_register', $n( 'register_header_controls' ) );
 	add_action( 'customize_register', $n( 'register_footer_controls' ) );
 	add_action( 'customize_register', $n( 'register_social_controls' ) );
+	add_action( 'customize_register', $n( 'register_menu_controls' ) );
 	add_action( 'customize_register', $n( 'rename_panels' ) );
 	add_action( 'customize_preview_init', $n( 'customize_preview_init' ) );
 	add_action( 'customize_controls_enqueue_scripts', $n( 'customize_preview_init' ) );
@@ -53,8 +54,13 @@ function register_control_types( \WP_Customize_Manager $wp_customize ) {
 	// phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 	require_once get_parent_theme_file_path( 'includes/classes/customizer/class-range-control.php' );
 
+	// This file is a class for our Customizer range control, not template partials.
+	// phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+	require_once get_parent_theme_file_path( 'includes/classes/customizer/class-title-control.php' );
+
 	$wp_customize->register_control_type( Switcher_Control::class );
 	$wp_customize->register_control_type( Range_Control::class );
+	$wp_customize->register_control_type( Title_Control::class );
 }
 
 /**
@@ -168,7 +174,7 @@ function customize_preview_init() {
 	wp_enqueue_script(
 		'go-customize-preview',
 		get_theme_file_uri( "dist/js/admin/customize-preview{$suffix}.js" ),
-		array( 'jquery', 'customize-preview', 'wp-autop' ),
+		array( 'jquery', 'wp-autop' ),
 		GO_VERSION,
 		true
 	);
@@ -177,7 +183,8 @@ function customize_preview_init() {
 		'go-customize-preview',
 		'GoPreviewData',
 		array(
-			'design_styles' => \Go\Core\get_available_design_styles(),
+			'design_styles'       => \Go\Core\get_available_design_styles(),
+			'selectedDesignStyle' => get_theme_mod( 'design_style', \Go\Core\get_default_design_style() ),
 		)
 	);
 }
@@ -195,9 +202,34 @@ function enqueue_controls_assets() {
 	wp_enqueue_script(
 		'go-customize-controls',
 		get_theme_file_uri( "dist/js/admin/customize-controls{$suffix}.js" ),
-		array( 'jquery' ),
+		array( 'jquery', 'wp-color-picker' ),
 		GO_VERSION,
 		true
+	);
+
+	$color_scheme            = str_replace( get_theme_mod( 'design_style' ) . '-', '', get_theme_mod( 'color_scheme', \Go\Core\get_default_color_scheme() ) );
+	$avaliable_color_schemes = \Go\Core\get_available_color_schemes();
+	$color_scheme_colors     = array();
+
+	if ( $color_scheme && ! empty( $avaliable_color_schemes[ $color_scheme ] ) ) {
+
+		if ( ! empty( $avaliable_color_schemes[ $color_scheme ]['label'] ) ) {
+
+			unset( $avaliable_color_schemes[ $color_scheme ]['label'] );
+
+		}
+
+		$color_scheme_colors = $avaliable_color_schemes[ $color_scheme ];
+
+	}
+
+	wp_localize_script(
+		'go-customize-controls',
+		'goCustomizerControls',
+		array(
+			'availableDesignStyles' => \Go\Core\get_available_design_styles(),
+			'activeColorScheme'     => array_values( $color_scheme_colors ),
+		)
 	);
 
 	wp_enqueue_style(
@@ -331,9 +363,28 @@ function register_global_controls( \WP_Customize_Manager $wp_customize ) {
 		'show_page_title_checkbox',
 		array(
 			'label'       => esc_html__( 'Page Titles', 'go' ),
-			'description' => esc_html__( 'Display page titles on individual pages.', 'go' ),
+			'description' => esc_html__( 'Display page titles on individual pages that are not individually opted-out.', 'go' ),
 			'section'     => 'go_site_settings',
 			'settings'    => 'page_titles',
+			'type'        => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'blog_excerpt',
+		array(
+			'default'           => false,
+			'sanitize_callback' => 'absint',
+		)
+	);
+
+	$wp_customize->add_control(
+		'blog_excerpt_checkbox',
+		array(
+			'label'       => esc_html__( 'Blog Excerpt', 'go' ),
+			'description' => esc_html__( 'Use post excerpts on the blog page.', 'go' ),
+			'section'     => 'go_site_settings',
+			'settings'    => 'blog_excerpt',
 			'type'        => 'checkbox',
 		)
 	);
@@ -416,7 +467,7 @@ function register_color_controls( \WP_Customize_Manager $wp_customize ) {
 			$wp_customize,
 			'color_scheme_control',
 			array(
-				'label'         => esc_html__( 'Color Scheme', 'go' ),
+				'label'         => esc_html__( 'Color scheme', 'go' ),
 				'section'       => 'colors',
 				'settings'      => 'color_scheme',
 				'choices'       => get_color_schemes_as_choices(),
@@ -492,6 +543,191 @@ function register_color_controls( \WP_Customize_Manager $wp_customize ) {
 		)
 	);
 
+	// Header colors.
+	$wp_customize->add_setting(
+		'title_header_colors',
+		array(
+			'sanitize_callback' => 'esc_html',
+		)
+	);
+
+	$wp_customize->add_control(
+		new Title_Control(
+			$wp_customize,
+			'title_header_colors',
+			array(
+				'type'        => 'go_title',
+				'label'       => esc_html__( 'Header Colors', 'go' ),
+				'description' => __( 'Customize colors within the site header.', 'go' ),
+				'section'     => 'colors',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'header_background_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+			'default'           => \Go\get_default_palette_color( 'header_background' ),
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'header_background_color',
+			array(
+				'label'    => esc_html__( 'Background', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'header_background_color',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'header_text_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'header_text_color',
+			array(
+				'label'    => esc_html__( 'Foreground', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'header_text_color',
+			)
+		)
+	);
+
+	// Footer colors.
+	$wp_customize->add_setting(
+		'title_footer_colors',
+		array(
+			'sanitize_callback' => 'esc_html',
+		)
+	);
+
+	$wp_customize->add_control(
+		new Title_Control(
+			$wp_customize,
+			'title_footer_colors',
+			array(
+				'type'        => 'go_title',
+				'label'       => esc_html__( 'Footer Colors', 'go' ),
+				'description' => __( 'Customize colors within the site footer.', 'go' ),
+				'section'     => 'colors',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'footer_background_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+			'default'           => \Go\get_default_palette_color( 'footer_background' ),
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'footer_background_color',
+			array(
+				'label'    => esc_html__( 'Background', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'footer_background_color',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'footer_text_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'footer_text_color',
+			array(
+				'label'    => esc_html__( 'Foreground', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'footer_text_color',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'footer_heading_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'footer_heading_color',
+			array(
+				'label'    => esc_html__( 'Heading', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'footer_heading_color',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'social_icon_color',
+		array(
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'sanitize_hex_color',
+		)
+	);
+
+	$wp_customize->add_control(
+		new \WP_Customize_Color_Control(
+			$wp_customize,
+			'social_icon_color',
+			array(
+				'label'    => esc_html__( 'Social Icon', 'go' ),
+				'section'  => 'colors',
+				'settings' => 'social_icon_color',
+			)
+		)
+	);
+
+	// Footer colors.
+	$wp_customize->add_setting(
+		'title_site_styles',
+		array(
+			'sanitize_callback' => 'esc_html',
+		)
+	);
+
+	$wp_customize->add_control(
+		new Title_Control(
+			$wp_customize,
+			'title_site_styles',
+			array(
+				'type'        => 'go_title',
+				'label'       => esc_html__( 'Additional Design Controls', 'go' ),
+				'description' => __( 'Customize additional design settings.', 'go' ),
+				'section'     => 'colors',
+			)
+		)
+	);
+
 	$wp_customize->add_setting(
 		'viewport_basis',
 		array(
@@ -502,22 +738,20 @@ function register_color_controls( \WP_Customize_Manager $wp_customize ) {
 	);
 
 	$wp_customize->add_control(
-		new Range_Control(
-			$wp_customize,
-			'viewport_basis',
-			array(
-				'default'     => \Go\Core\get_default_viewport_basis(),
-				'type'        => 'go_range_control',
-				'label'       => esc_html__( 'Spacing', 'go' ),
-				'section'     => 'colors',
-				'input_attrs' => array(
-					'min'  => 500,
-					'max'  => 2250,
-					'step' => 1,
-				),
-			)
+		'viewport_basis',
+		array(
+			'default'     => \Go\Core\get_default_viewport_basis(),
+			'type'        => 'range',
+			'label'       => esc_html__( 'Site Spacing', 'go' ),
+			'section'     => 'colors',
+			'input_attrs' => array(
+				'min'  => 500,
+				'max'  => 2250,
+				'step' => 1,
+			),
 		)
 	);
+
 }
 
 /**
@@ -560,41 +794,26 @@ function register_header_controls( \WP_Customize_Manager $wp_customize ) {
 		)
 	);
 
-	$wp_customize->add_setting(
-		'header_background_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-			'default'           => \Go\get_default_palette_color( 'header_background' ),
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'header_background_color_control',
+			'header_background_color_control_alt',
 			array(
-				'label'    => esc_html__( 'Background Color', 'go' ),
+				'label'    => esc_html__( 'Background', 'go' ),
 				'section'  => 'go_header_settings',
 				'settings' => 'header_background_color',
 			)
 		)
 	);
 
-	$wp_customize->add_setting(
-		'header_text_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'header_text_color_control',
+			'header_text_color_control_alt',
 			array(
-				'label'    => esc_html__( 'Text Color', 'go' ),
+				'label'    => esc_html__( 'Foreground', 'go' ),
 				'section'  => 'go_header_settings',
 				'settings' => 'header_text_color',
 			)
@@ -642,63 +861,41 @@ function register_footer_controls( \WP_Customize_Manager $wp_customize ) {
 		)
 	);
 
-	$wp_customize->add_setting(
-		'footer_background_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-			'default'           => \Go\get_default_palette_color( 'footer_background' ),
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'footer_background_color_control',
+			'footer_background_color_control_alt',
 			array(
-				'label'    => esc_html__( 'Background Color', 'go' ),
+				'label'    => esc_html__( 'Background', 'go' ),
 				'section'  => 'go_footer_settings',
 				'settings' => 'footer_background_color',
 			)
 		)
 	);
 
-	$wp_customize->add_setting(
-		'footer_heading_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'footer_heading_color',
+			'footer_text_color_alt',
 			array(
-				'label'    => esc_html__( 'Heading Color', 'go' ),
+				'label'    => esc_html__( 'Foreground', 'go' ),
 				'section'  => 'go_footer_settings',
-				'settings' => 'footer_heading_color',
+				'settings' => 'footer_text_color',
 			)
 		)
 	);
 
-	$wp_customize->add_setting(
-		'footer_text_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'footer_text_color',
+			'footer_heading_color_alt',
 			array(
-				'label'    => esc_html__( 'Text Color', 'go' ),
+				'label'    => esc_html__( 'Heading', 'go' ),
 				'section'  => 'go_footer_settings',
-				'settings' => 'footer_text_color',
+				'settings' => 'footer_heading_color',
 			)
 		)
 	);
@@ -717,7 +914,7 @@ function register_social_controls( \WP_Customize_Manager $wp_customize ) {
 		'go_social_media',
 		array(
 			'title'       => esc_html__( 'Social', 'go' ),
-			'description' => 'Add social media account links to apply social icons to the footer of your site.',
+			'description' => esc_html__( 'Add social media account links to apply social icons on the site footer.', 'go' ),
 			'priority'    => 90,
 		)
 	);
@@ -747,25 +944,57 @@ function register_social_controls( \WP_Customize_Manager $wp_customize ) {
 		);
 	}
 
-	$wp_customize->add_setting(
-		'social_icon_color',
-		array(
-			'transport'         => 'postMessage',
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
+	// Alternate color control.
 	$wp_customize->add_control(
 		new \WP_Customize_Color_Control(
 			$wp_customize,
-			'social_icon_color',
+			'social_icon_color_alt',
 			array(
-				'label'    => esc_html__( 'Icon Color', 'go' ),
+				'label'    => esc_html__( 'Social icon', 'go' ),
 				'section'  => 'go_social_media',
 				'settings' => 'social_icon_color',
 			)
 		)
 	);
+}
+
+/**
+ * Register the menu within Customize.
+ *
+ * @param \WP_Customize_Manager $wp_customize The customize manager object.
+ *
+ * @return void
+ */
+function register_menu_controls( \WP_Customize_Manager $wp_customize ) {
+
+	$wp_customize->add_section(
+		'go_menu_behavior',
+		array(
+			'title' => __( 'Menu Behavior', 'go' ),
+			'panel' => 'nav_menus',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'open_menu_on_hover',
+		array(
+			'capability'        => 'edit_theme_options',
+			'default'           => true,
+			'sanitize_callback' => 'absint',
+		)
+	);
+
+	$wp_customize->add_control(
+		'open_menu_on_hover',
+		array(
+			'label'       => __( 'Show sub menus on hover.', 'go' ),
+			'description' => esc_html__( 'Show sub menu items on hover.', 'go' ),
+			'section'     => 'go_menu_behavior',
+			'settings'    => 'open_menu_on_hover',
+			'type'        => 'checkbox',
+		)
+	);
+
 }
 
 /**
@@ -826,6 +1055,26 @@ function inline_css() {
 
 	// Spacing.
 	$viewport_basis = get_theme_mod( 'viewport_basis', '1100' );
+
+	// Fonts.
+	$fonts = get_theme_mod( 'fonts', array() );
+
+	if ( ! empty( $fonts ) ) {
+
+		list( $font_headings, $font_body ) = array_keys( $fonts );
+
+		$font_headings = str_replace( '_heading', '', $font_headings );
+		$font_body     = str_replace( '_body', '', $font_body );
+
+		list(
+			$font_heading_weights,
+			$font_body_weights
+		) = array_values( $fonts );
+
+	}
+
+	$font_size  = get_theme_mod( 'font_size' );
+	$type_ratio = get_theme_mod( 'type_ratio' );
 	?>
 		<style>
 			:root {
@@ -883,9 +1132,54 @@ function inline_css() {
 					--go-logo-mobile--max-width: <?php echo esc_attr( $logo_width_mobile ); ?>px;
 				<?php endif; ?>
 
-				<?php if ( false === $viewport_basis ) : ?>
+				<?php if ( $viewport_basis ) : ?>
 					--go--viewport-basis: <?php echo esc_attr( $viewport_basis ); ?>;
 				<?php endif; ?>
+
+				<?php if ( isset( $font_headings, $font_body ) ) : ?>
+					--go-heading--font-family: <?php echo esc_attr( $font_headings ); ?>;
+					--go--font-family: <?php echo esc_attr( $font_body ); ?>;
+				<?php endif; ?>
+
+				<?php if ( $font_size ) : ?>
+					--go--font-size: <?php echo esc_attr( $font_size ); ?>;
+				<?php endif; ?>
+
+				<?php if ( $type_ratio ) : ?>
+					--go--type-ratio: <?php echo esc_attr( $type_ratio ); ?>;
+				<?php endif; ?>
+
+				<?php if ( ! empty( $font_heading_weights ) ) : ?>
+					--go-heading--font-weight: <?php echo esc_attr( $font_heading_weights[0] ); ?>;
+				<?php endif; ?>
+
+				<?php if ( ! empty( $font_body_weights ) ) : ?>
+					--go--font-weight: <?php echo esc_attr( $font_body_weights[0] ); ?>;
+				<?php endif; ?>
+			}
+
+			.has-primary-to-secondary-gradient-background {
+				background: -webkit-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--secondary) 100%);
+				background: -o-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--secondary) 100%);
+				background: linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--secondary) 100%);
+			}
+
+			.has-primary-to-tertiary-gradient-background {
+				background: -webkit-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--tertiary) 100%);
+				background: -o-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--tertiary) 100%);
+				background: linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--tertiary) 100%);
+			}
+
+			.has-primary-to-background-gradient-background {
+				background: -webkit-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--background) 100%);
+				background: -o-linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--background) 100%);
+				background: linear-gradient(135deg, var(--go--color--primary) 0%, var(--go--color--background) 100%);
+			}
+
+			.has-secondary-to-tertiary-gradient-background {
+				background: -webkit-linear-gradient(135deg, var(--go--color--secondary) 0%, var(--go--color--tertiary) 100%);
+				background: -o-linear-gradient(135deg, var(--go--color--secondary) 0%, var(--go--color--tertiary) 100%);
+				background: linear-gradient(135deg, var(--go--color--secondary) 0%, var(--go--color--tertiary) 100%);
 			}
 		</style>
 	<?php

@@ -1,10 +1,10 @@
 === Go ===
 Contributors: godaddy, richtabor, eherman24, jrtashjian
-Tags: one-column, custom-colors, custom-logo, custom-menu, editor-style, theme-options, threaded-comments, translation-ready, block-styles, wide-blocks
+Tags: block-styles, custom-colors, custom-logo, custom-menu, e-commerce, editor-style, one-column, theme-options, threaded-comments, translation-ready, wide-blocks
 Requires at least: 5.0
-Tested up to: 5.4
+Tested up to: 5.6
 Requires PHP: 5.6.0
-Stable tag: 1.2.7
+Stable tag: 1.4.4
 License: GPL-2.0-only
 License URI: https://www.gnu.org/licenses/license-list.html#GPLv2
 
@@ -109,11 +109,13 @@ List of bespoke icons:
 
 == Changelog ==
 
-### Enhancements
-* Various design and functionality improvements to the WooCommerce slide out cart. [#488](https://github.com/godaddy-wordpress/go/pull/488)
-* Introduce improved fallbacks for CSS custom properties. [#491](https://github.com/godaddy-wordpress/go/pull/491)
-* Allow for design styles to specify no Google fonts. [#493](https://github.com/godaddy-wordpress/go/pull/493)
-* Declare HTML5 scripts and styles support for better compliance with W3C validator. [#498](https://github.com/godaddy-wordpress/go/pull/498)
-
 ### Bug Fixes
-* Fix copyright footer text error on save. [#497](https://github.com/godaddy-wordpress/go/pull/497)
+- Fix WooCommerce grouped product table styles. [#661](https://github.com/godaddy-wordpress/go/pull/661)
+- Fix invalid RGB color string warning in the customizer when no color is set. [#652](https://github.com/godaddy-wordpress/go/pull/652)
+- Fix header 2 submenu alignment. [#655](https://github.com/godaddy-wordpress/go/pull/655)
+- Remove the 16px bottom margin from the last-child image for galleries in the editor. [#656](https://github.com/godaddy-wordpress/go/pull/656)
+- Set Heebo as the default font for the modern design style. [#657](https://github.com/godaddy-wordpress/go/pull/657)
+
+### Tweaks
+- Allow for logo, title and tagline to display in the header. [#658](https://github.com/godaddy-wordpress/go/pull/658)
+- Fix modern tagline kearning. [#660](https://github.com/godaddy-wordpress/go/pull/660)

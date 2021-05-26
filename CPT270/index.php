@@ -103,9 +103,9 @@ if(!empty($_POST)){
 	<a href="#showing">Now Showing</a>
 </nav>
 <main>
+<img id="top-image" src="media/photo-1517604931442-7e0c8ed2963c.jfif" alt="Photograph of filled cinema">
 <section id="about">
 <h2>Welcome to Lunardo Cinemas!</h2>
-<img src="media/photo-1517604931442-7e0c8ed2963c.jfif" alt="Photograph of filled cinema">
 <p>We have reopened after <strong>extensive improvements and renovations</strong>.</p>
 <p>Enjoy our <strong>new seating options</strong>: standard and reclinable first class.</p>
 <p>Our projection and sound systems have been upgraded with <strong>3D Dolby Vision</strong> projection and <strong>Dolby Atmos sound</strong>.</p> 

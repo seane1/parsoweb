@@ -32,9 +32,9 @@
 
 	<div class="<?php Go\content_wrapper_class( 'content-area__wrapper' ); ?>">
 
-		<div class="content-area">
+		<div class="content-area entry-content">
 			<?php
-			if ( is_search() ) {
+			if ( is_search() || ( get_theme_mod( 'blog_excerpt', false ) && is_home() ) ) {
 				the_excerpt();
 			} else {
 				the_content();

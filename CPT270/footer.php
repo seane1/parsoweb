@@ -7,8 +7,5 @@
 	document.write(new Date().getFullYear());
 	</script> Seane Parsonson <a href="https://github.com/s3793983/wp">My Github</a>. Last modified <?= date ("Y F d  H:i", filemtime($_SERVER['SCRIPT_FILENAME'])); ?>.</div>
 </footer>
-<?php
-debug();
-?>
 </body>
 </html>

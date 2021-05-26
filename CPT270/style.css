@@ -3,7 +3,7 @@ html{scroll-behavior:smooth;}
 @font-face{font-family:Anton;src:url(media/Anton-Regular.ttf);}
 @font-face{font-family:Roboto;src:url(media/Roboto-Regular.ttf);}
 @font-face{font-family:Deco;src:url(media/American-Captain.ttf);}
-body{background-color:dimgrey;margin-left:auto;margin-right:auto;width:80%;font-family:Roboto;}
+body{background-color:dimgrey;margin-top:0px;margin-bottom:0px;margin-left:auto;margin-right:auto;width:80%;font-family:Roboto;}
 main{background-color:white;}
 header{text-align:center;color:white;background-color:black;padding:10px;}
 header h1{padding:10px;display:inline-block;vertical-align:middle;font-family:Deco;font-size:3em;font-weight:normal;}
@@ -11,9 +11,10 @@ header img{height:100px;width:100px;border-radius:50px;display:inline-block;vert
 nav{background-color:black;text-align:center;position: -webkit-sticky;position:sticky;top:0;}
 nav a{display:inline-block;padding:20px 40px;text-decoration:none;color:white;font-family:Anton;}
 nav a.current{background-color:white;color:black;}
+#top-image{width:100%;}
 section{min-height:100vh;background-color:white;padding:60px;display:inline-block;width:100%;box-sizing:border-box;}
 section img{width:100%;}
-section h2{text-align:center;font-family:Anton;}
+section h2{text-align:center;font-family:Anton;padding-bottom:20px;}
 #prices{background-image:url("media/HOTA-cinema.jpg");background-attachment:fixed;background-position:center;background-repeat:no-repeat;background-size:cover;color:white;}
 figcaption{text-align:center;}
 table{border:3px solid white;border-radius:10px;padding:10px;line-height:150%;}

@@ -8,7 +8,7 @@
 /**
  * Theme constants.
  */
-define( 'GO_VERSION', '1.2.7' );
+define( 'GO_VERSION', '1.4.4' );
 
 /**
  * AMPP setup, hooks, and filters.
@@ -46,6 +46,18 @@ require_once get_parent_theme_file_path( 'includes/tgm.php' );
 require_once get_parent_theme_file_path( 'includes/woocommerce.php' );
 
 /**
+ * Page Titles Meta functions.
+ */
+require_once get_parent_theme_file_path( 'includes/title-meta.php' );
+
+/**
+ * Layouts for the CoBlocks layout selector.
+ */
+foreach ( glob( get_parent_theme_file_path( 'partials/layouts/*.php' ) ) as $filename ) {
+	require_once $filename;
+}
+
+/**
  * Run setup functions.
  */
 Go\AMP\setup();
@@ -53,6 +65,7 @@ Go\Core\setup();
 Go\TGM\setup();
 Go\Customizer\setup();
 Go\WooCommerce\setup();
+Go\Title_Meta\setup();
 
 if ( ! function_exists( 'wp_body_open' ) ) :
 	/**

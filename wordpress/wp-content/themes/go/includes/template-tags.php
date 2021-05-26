@@ -47,6 +47,7 @@ function get_post_meta( $post_id = null, $location = 'top' ) {
 		return;
 	}
 
+	$post_meta                 = false;
 	$post_meta_wrapper_classes = '';
 	$post_meta_classes         = '';
 
@@ -58,6 +59,7 @@ function get_post_meta( $post_id = null, $location = 'top' ) {
 			array(
 				'author',
 				'post-date',
+				'categories',
 				'comments',
 				'sticky',
 			)
@@ -116,7 +118,7 @@ function get_post_meta( $post_id = null, $location = 'top' ) {
 					<span class="meta-text">
 						<?php
 						// Translators: %s = the author name.
-						printf( esc_html_x( 'By %s', '%s = author name', 'go' ), '<a href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author_meta( 'nickname' ) ) . '</a>' );
+						printf( esc_html_x( 'By %s', '%s = author name', 'go' ), '<a href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author_meta( 'display_name' ) ) . '</a>' );
 						?>
 					</span>
 				</li>
@@ -283,11 +285,11 @@ function get_copyright_kses_html() {
  * Returns the color selected by the user.
  *
  * @param string $color  Which color to return.
- * @param string $format The format to return the color. RGB (default) or HSL (returns an array).
+ * @param string $format The format to return the color. Possible Values: RGB (default), HSL (returns an array) or HEX.
  *
  * @return string|array|bool A string with the RGB value or an array containing the HSL values.
  */
-function get_palette_color( $color, $format = 'RBG' ) {
+function get_palette_color( $color, $format = 'RGB' ) {
 	$default         = \Go\Core\get_default_color_scheme();
 	$color_scheme    = get_theme_mod( 'color_scheme', $default );
 	$override_colors = array(
@@ -314,11 +316,20 @@ function get_palette_color( $color, $format = 'RBG' ) {
 	}
 
 	if ( ! empty( $the_color ) ) {
+
 			// Ensure we have a hash mark at the beginning of the hex value.
 		$the_color = '#' . ltrim( $the_color, '#' );
 
 		if ( 'HSL' === $format ) {
 			return hex_to_hsl( $the_color );
+		}
+
+		if ( 'RGB' === $format ) {
+			return hex_to_rgb( $the_color );
+		}
+
+		if ( 'HEX' === $format ) {
+			return $the_color;
 		}
 	}
 
@@ -333,7 +344,7 @@ function get_palette_color( $color, $format = 'RBG' ) {
  *
  * @return string|array|bool A string with the RGB value or an array containing the HSL values.
  */
-function get_default_palette_color( $color, $format = 'RBG' ) {
+function get_default_palette_color( $color, $format = 'RGB' ) {
 	$default                 = \Go\Core\get_default_color_scheme();
 	$color_scheme            = get_theme_mod( 'color_scheme', $default );
 	$avaliable_color_schemes = get_available_color_schemes();
@@ -359,9 +370,59 @@ function get_default_palette_color( $color, $format = 'RBG' ) {
 }
 
 /**
+ * Convert a 3- or 6-digit hexadecimal color to an associative RGB array.
+ *
+ * @param string $color The color in hex format.
+ * @param bool   $opacity Whether to return the RGB color is opaque.
+ *
+ * @return string
+ */
+function hex_to_rgb( $color, $opacity = false ) {
+
+	if ( empty( $color ) ) {
+		return false;
+	}
+
+	if ( '#' === $color[0] ) {
+		$color = substr( $color, 1 );
+	}
+
+	if ( 6 === strlen( $color ) ) {
+		$hex = array( $color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5] );
+	} elseif ( 3 === strlen( $color ) ) {
+		$hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
+	} else {
+		$default                 = \Go\Core\get_default_color_scheme();
+		$avaliable_color_schemes = get_available_color_schemes();
+		if ( isset( $avaliable_color_schemes[ $default ] ) && isset( $avaliable_color_schemes[ $default ]['primary'] ) ) {
+			$default = $avaliable_color_schemes[ $default ]['primary'];
+		}
+		return $default;
+	}
+
+	$rgb = array_map( 'hexdec', $hex );
+
+	if ( $opacity ) {
+		if ( abs( $opacity ) > 1 ) {
+			$opacity = 1.0;
+		}
+
+		$output = 'rgba(' . implode( ',', $rgb ) . ',' . $opacity . ')';
+
+	} else {
+
+		$output = 'rgb(' . implode( ',', $rgb ) . ')';
+
+	}
+
+	return esc_attr( $output );
+
+}
+
+/**
  * Converts a hex RGB color to HSL
  *
- * @param string $hex The RGB color in hex format.
+ * @param string $hex The HSL color in hex format.
  * @param bool   $string_output Whether to return the HSL color in CSS format.
  *
  * @return array
@@ -692,16 +753,29 @@ function social_icons( $args = array() ) {
 	<ul class="<?php echo esc_attr( $args['class'] ); ?>">
 		<?php foreach ( $social_icons as $key => $social_icon ) : ?>
 
-			<?php $visibility = empty( $social_icon['url'] ) ? ' display-none' : null; ?>
+			<?php
+
+			$screen_reader_text = sprintf(
+				/* translators: %s: The social icon label. */
+				esc_html__( 'Open %s in a new tab', 'go' ),
+				esc_html( $social_icon['label'] )
+			);
+
+			$visibility = empty( $social_icon['url'] ) ? ' display-none' : null;
+
+			?>
 
 			<?php if ( ! empty( $social_icon['url'] ) || is_customize_preview() ) : ?>
 				<li class="<?php echo esc_attr( sprintf( $args['li_class'], $key ) ) . esc_attr( $visibility ); ?>">
-					<a class="social-icons__icon" href="<?php echo esc_url( $social_icon['url'] ); ?>" aria-label="<?php echo esc_attr( $social_icon['label'] ); ?>" rel="noopener noreferrer">
+					<a class="social-icons__icon" href="<?php echo esc_url( $social_icon['url'] ); ?>" aria-label="<?php echo esc_attr( $screen_reader_text ); ?>" rel="noopener noreferrer" target="_blank">
 						<?php
 						// Including SVGs, not template files.
 						// phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 						include $social_icon['icon'];
 						?>
+						<span class="screen-reader-text">
+							<?php echo esc_html( $screen_reader_text ); ?>
+						</span>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -744,23 +818,23 @@ function site_branding( $args = array() ) {
 
 	if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
 		the_custom_logo();
-	} else {
-		$blog_name        = get_bloginfo( 'name' );
-		$blog_description = get_bloginfo( 'description' );
-
-		if ( ! empty( $blog_name ) ) {
-			echo '<a class="display-inline-block no-underline" href="' . esc_url( home_url( '/' ) ) . '" itemprop="url">';
-			printf(
-				'<%1$s class="site-title">' . esc_html( $blog_name ) . '</%1$s>',
-				( is_front_page() && ! did_action( 'get_footer' ) ) ? 'h1' : 'span'
-			);
-			echo '</a>';
-		}
-
-		if ( true === $args['description'] && ! empty( $blog_description ) ) :
-			echo '<span class="site-description display-none sm:display-block relative text-sm">' . esc_html( $blog_description ) . '</span>';
-		endif;
 	}
+
+	$blog_name        = get_bloginfo( 'name' );
+	$blog_description = get_bloginfo( 'description' );
+
+	if ( ! empty( $blog_name ) ) {
+		echo '<a class="display-inline-block no-underline" href="' . esc_url( home_url( '/' ) ) . '" itemprop="url">';
+		printf(
+			'<%1$s class="site-title">' . esc_html( $blog_name ) . '</%1$s>',
+			( is_front_page() && ! did_action( 'get_footer' ) ) ? 'h1' : 'span'
+		);
+		echo '</a>';
+	}
+
+	if ( true === $args['description'] && ! empty( $blog_description ) ) :
+		echo '<span class="site-description display-none sm:display-block relative text-sm">' . esc_html( $blog_description ) . '</span>';
+	endif;
 }
 
 /**
@@ -872,12 +946,13 @@ function load_inline_svg( $filename ) {
 			wp_kses_allowed_html( 'post' ),
 			array(
 				'svg'  => array(
-					'role'    => true,
-					'width'   => true,
-					'height'  => true,
-					'fill'    => true,
-					'xmlns'   => true,
-					'viewbox' => true,
+					'role'        => true,
+					'width'       => true,
+					'height'      => true,
+					'fill'        => true,
+					'xmlns'       => true,
+					'viewbox'     => true,
+					'aria-hidden' => true,
 				),
 				'path' => array(
 					'd'              => true,

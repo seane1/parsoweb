@@ -59,9 +59,6 @@
     --go-site-title--font-weight: 600;
     --go-site-title--letter-spacing: 0;
     --go-site-title--text-transform: normal;
-}
-
-:root {
     --go-site-description--color--text: var(--go--color--primary);
     --go-site-description--opacity: 1;
     --go-navigation--color--text: var(--go--color--primary);
@@ -80,19 +77,13 @@
     --go-footer--color--text: var(--go--color--primary);
     --go-footer-navigation--color--text: var(--go--color--primary);
     --go-footer-navigation--color--text: var(--go-heading--color--text);
-    --go-footer-3--border-color: 0, 0, 100%;
     --go-footer-3--border-color: "";
-    --go-footer-3--border-color: var(--go-header--color--background, var(--go--color--background, 0, 0, 100%));
+    --go-footer-3--border-color: var(--go-header--color--background);
     --go-footer-3--border-width: 10px;
     --go-social--padding: .5rem;
     --go-social--size: 1.5rem;
-}
-
-:root {
     --go-meta--color--text: var(--go--color--primary);
     --wp-block-coblocks-food-item--heading--font-weight: 700;
-    --editor-max-w-base: 702px;
-    --editor-max-w-wide: 1134px;
 }
 
 /*! Welcoming: Button */
@@ -155,33 +146,24 @@
     fill: var(--go--color--primary);
 }
 
-.woocommerce div.product .woocommerce-tabs ul.tabs li {
-    margin: 0 2rem 1.5rem 0;
-}
-
-.woocommerce div.product .woocommerce-tabs ul.tabs li a {
-    padding: 5px 10px;
-}
-
-table.variations tbody tr:nth-child(odd) {
-    background-color: transparent;
+.woocommerce-checkout .wc_payment_methods li.wc_payment_method label[for^=payment_method_]:before {
+    top: 6px;
 }
 
 html {
-    background-color: 0, 0, 100%;
     background-color: "";
-    background-color: var(--go-header--color--background, var(--go--color--background, 0, 0, 100%));
+    background-color: var(--go-header--color--background);
 }
 
 body {
     border: .75rem solid;
-    border: .75rem solid var(--go-header--color--background, var(--go--color--background, 0, 0, 100%));
+    border: .75rem solid var(--go-header--color--background);
     border-top: 0;
 }
 
 .site-footer.has-background {
     border-top: .75rem solid;
-    border-top: .75rem solid var(--go-header--color--background, var(--go--color--background, 0, 0, 100%));
+    border-top: .75rem solid var(--go-header--color--background);
 }
 
 .has-footer-3 .site-footer__inner {
@@ -220,11 +202,9 @@ body {
     opacity: 1;
 }
 
-@media (min-width:782px) {
+@media only screen and (min-width:782px) {
     :root {
         --go-site-title--font-size: 2.25rem;
-    }
-    :root {
         --go-social--padding: 1rem;
         --go-social--size: 2rem;
     }

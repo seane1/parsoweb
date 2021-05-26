@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 :root {
     --go--max-width: 38rem;
     --go--max-width--alignwide: 80rem;
@@ -61,9 +63,6 @@
     --go-site-title--font-size: 1.5rem;
     --go-site-title--letter-spacing: .033em;
     --go-site-title--font-weight: 400;
-}
-
-:root {
     --go-site-description--color--text: #000;
     --go-site-description--color--text: var(--go-heading--color--text);
     --go-site-description--font-family: "Source Code Pro", monospace;
@@ -88,14 +87,9 @@
     --go-social--color--text: var(--go--color--white);
     --go-social--size: 1.5rem;
     --go-social--padding: .5rem;
-}
-
-:root {
     --go-meta--color--text: #000;
     --go-meta--color--text: var(--go-heading--color--text);
     --wp-block-coblocks-gallery-carousel--overlay--opacity: 0;
-    --editor-max-w-base: 638px;
-    --editor-max-w-wide: 1118px;
 }
 
 /*! Trendy: Button */
@@ -213,6 +207,14 @@
     left: 15px;
 }
 
+.woocommerce-checkout input[name=payment_method]+label {
+    padding-right: 2rem;
+}
+
+.woocommerce-checkout input[name=payment_method]+label:before {
+    top: 4px;
+}
+
 body {
     -webkit-font-smoothing: antialiased;
 }
@@ -222,16 +224,14 @@ body {
 }
 
 .has-footer-1 .footer-navigation a {
-    color: intial;
+    color: initial;
     color: #8c8c8c;
-    color: var(--go-footer--color--text, intial);
+    color: var(--go-footer--color--text, initial);
 }
 
-@media (min-width:782px) {
+@media only screen and (min-width:782px) {
     :root {
         --go-site-title--font-size: 2rem;
-    }
-    :root {
         --go-social--size: 1.65rem;
         --go-social--padding: 1rem;
     }

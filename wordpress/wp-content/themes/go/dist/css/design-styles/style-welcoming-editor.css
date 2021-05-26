@@ -59,9 +59,6 @@
     --go-site-title--font-weight: 600;
     --go-site-title--letter-spacing: 0;
     --go-site-title--text-transform: normal;
-}
-
-:root {
     --go-site-description--color--text: var(--go--color--primary);
     --go-site-description--opacity: 1;
     --go-navigation--color--text: var(--go--color--primary);
@@ -80,19 +77,13 @@
     --go-footer--color--text: var(--go--color--primary);
     --go-footer-navigation--color--text: var(--go--color--primary);
     --go-footer-navigation--color--text: var(--go-heading--color--text);
-    --go-footer-3--border-color: 0, 0, 100%;
     --go-footer-3--border-color: "";
-    --go-footer-3--border-color: var(--go-header--color--background, var(--go--color--background, 0, 0, 100%));
+    --go-footer-3--border-color: var(--go-header--color--background);
     --go-footer-3--border-width: 10px;
     --go-social--padding: .5rem;
     --go-social--size: 1.5rem;
-}
-
-:root {
     --go-meta--color--text: var(--go--color--primary);
     --wp-block-coblocks-food-item--heading--font-weight: 700;
-    --editor-max-w-base: 702px;
-    --editor-max-w-wide: 1134px;
 }
 
 /*! Welcoming: Button */
@@ -155,11 +146,9 @@
     fill: var(--go--color--primary);
 }
 
-@media (min-width:782px) {
+@media only screen and (min-width:782px) {
     :root {
         --go-site-title--font-size: 2.25rem;
-    }
-    :root {
         --go-social--padding: 1rem;
         --go-social--size: 2rem;
     }

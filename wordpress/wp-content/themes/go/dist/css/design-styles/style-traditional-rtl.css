@@ -13,9 +13,6 @@
     --go--letter-spacing--small: .015em;
     --go--line-height: 1.85;
     --go--type-ratio: 1.275;
-}
-
-:root {
     --go-heading--button-spacing: 1.75rem;
     --go-heading--color--text: var(--go--color--secondary);
     --go-heading--font-family: "Crimson Text", serif;
@@ -29,9 +26,6 @@
     --go-caption--text-align: left;
     --go-quote--border-width: .45rem;
     --go-quote-large--font-size: 2.5em;
-}
-
-:root {
     --go-pullquote--font-family: serif;
     --go-pullquote--font-style: normal;
     --go-outline--color--text: var(--go--color--secondary);
@@ -68,9 +62,6 @@
     --go-site-title--color--text: var(--go--color--secondary);
     --go-site-title--color--text: var(--go-heading--color--text);
     --go-site-title--font-size: 1.75rem;
-}
-
-:root {
     --go-site-description--color--text: var(--go--color--secondary);
     --go-site-description--color--text: var(--go-heading--color--text);
     --go-navigation--color--text: var(--go--color--secondary);
@@ -105,31 +96,35 @@
     --wp-block-coblocks-gallery-carousel--overlay--opacity: .5;
     --wp-block-coblocks-services--heading--margin-bottom: 1.25rem;
     --wp-block-coblocks-services--heading--margin-top: 2rem;
-    --editor-max-w-base: 702px;
-    --editor-max-w-wide: 1118px;
+}
+
+.woocommerce-checkout #ship-to-different-address-checkbox {
+    margin-left: .5rem;
+}
+
+.woocommerce-checkout .wc_payment_methods li.wc_payment_method label[for^=payment_method_]:before {
+    top: 5px;
 }
 
 .wp-block-coblocks-food-item__attributes {
     top: 0;
 }
 
-@media (min-width:600px) {
+@media only screen and (min-width:600px) {
     :root {
         --go--font-size--small: 90%;
     }
 }
 
-@media (min-width:960px) {
+@media only screen and (min-width:960px) {
     :root {
         --go--font-size--small: 97%;
     }
 }
 
-@media (min-width:782px) {
+@media only screen and (min-width:782px) {
     :root {
         --go-quote-large--font-size: 3.75em;
-    }
-    :root {
         --go-site-title--font-size: 2.15rem;
     }
 }
